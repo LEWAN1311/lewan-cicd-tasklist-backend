@@ -81,7 +81,7 @@ pipeline {
                 sh """
                     mkdir -p reports
                     trivy image --timeout 15m --no-progress --format table --output reports/trivy-report.txt ${IMAGE_REF}
-                    trivy image --timeout 15m --no-progress json --output reports/trivy-report.json ${IMAGE_REF}
+                    trivy image --timeout 15m --no-progress --format json --output reports/trivy-report.json ${IMAGE_REF}
                 """
             }
             post {
