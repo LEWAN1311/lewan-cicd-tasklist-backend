@@ -95,11 +95,13 @@ pipeline {
             steps {
                 sh """
                     mkdir -p reports
+                    trivy image --timeout 15m --no-progress --format spdx-json --output reports/sbom.spdx.json ${IMAGE_REF}
                     trivy image --timeout 15m --no-progress --format cyclonedx --output reports/sbom.cdx.json ${IMAGE_REF}
                 """
             }
             post {
                 always {
+                    archiveArtifacts artifacts: 'reports/sbom.spdx.json', allowEmptyArchive: true
                     archiveArtifacts artifacts: 'reports/sbom.cdx.json', allowEmptyArchive: true
                 }
             }
