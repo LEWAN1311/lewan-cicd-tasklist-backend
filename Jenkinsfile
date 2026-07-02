@@ -80,8 +80,8 @@ pipeline {
             steps {
                 sh """
                     mkdir -p reports
-                    trivy image --no-progress --format table --output reports/trivy-report.txt ${IMAGE_REF}
-                    trivy image --no-progress --format json --output reports/trivy-report.json ${IMAGE_REF}
+                    trivy image --timeout 15m --no-progress --format table --output reports/trivy-report.txt ${IMAGE_REF}
+                    trivy image --timeout 15m --no-progress json --output reports/trivy-report.json ${IMAGE_REF}
                 """
             }
             post {
@@ -95,7 +95,7 @@ pipeline {
             steps {
                 sh """
                     mkdir -p reports
-                    trivy image --no-progress --format cyclonedx --output reports/sbom.cdx.json ${IMAGE_REF}
+                    trivy image --timeout 15m --no-progress --format cyclonedx --output reports/sbom.cdx.json ${IMAGE_REF}
                 """
             }
             post {
