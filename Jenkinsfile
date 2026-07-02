@@ -91,7 +91,15 @@ pipeline {
             }
         }
 
-        stage('8. Generate SBOM') {
+        stage('8. Trivy security gate') {
+            steps {
+                sh """
+                    trivy image --no-progress --exit-code 1 --severity HIGH,CRITICAL ${IMAGE_REF}
+                """
+            }
+        }
+
+        stage('9. Generate SBOM') {
             steps {
                 sh """
                     mkdir -p reports
@@ -107,7 +115,7 @@ pipeline {
             }
         }
 
-        stage('9. Push Docker image') {
+        stage('10. Push Docker image') {
             steps {
                 withCredentials([usernamePassword(
                     credentialsId: 'lewan1311-dockerhub-password',
